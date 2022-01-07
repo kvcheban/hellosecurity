@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Contacts</title>
+	</head>
+	<body>
+		<h1>Set your contacts</h1>
+		<form th:action="@{/contacts}" method="post">
+			<label for="Name">Name</label>:
+			<input type="text" id="name" name="name" th:value="${name} "autofocus="autofocus" /><br />
+			<label for="email">E-mail</label>:
+			<input type="text" id="email" name="email" th:value="${email}" /> <br />
+			<input type="submit" value="Set contacts" />
+		</form>
+		<a href="/">Home</a>
+	</body>
+</html>

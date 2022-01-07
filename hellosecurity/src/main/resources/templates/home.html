@@ -11,8 +11,10 @@
 			Your authorities: <span sec:authentication="principal.authorities">[ROLE_USER]</span>.
 			<br />
 			<br />
-			<span sec:authorize="hasRole('USER')">Text visible to user.</span>
-			<span sec:authorize="hasRole('ADMIN')">Text visible to admin.</span>
+			<a href="userPage" sec:authorize="hasRole('USER')">User-only page</a><br />
+			<a href="adminPage" sec:authorize="hasRole('ADMIN')">Admin-only page</a><br />
+			<a href="contacts">Contacts</a><br />
+			<a href="cookies">Cookies</a>
 		</p>
 	</body>
 </html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Cookies</title>
+	</head>
+	<body>
+		<h1>Cookies</h1>
+		<table th:if="${cookies != null}">
+			<tr>
+				<th>Name</th>
+				<th>Value</th>
+				<th>Domain</th>
+				<th>Path</th>
+				<th>Max Age</th>
+			</tr>
+			<tr th:each="cookie : ${cookies}">
+				<td th:text="${cookie.name}"></td>
+				<td th:text="${cookie.value}"></td>
+				<td th:text="${cookie.domain}"></td>
+				<td th:text="${cookie.path}"></td>
+				<td th:text="${cookie.maxAge}"></td>
+			</tr>
+		</table>
+		<a href="/">Home</a>
+	</body>
+</html>
