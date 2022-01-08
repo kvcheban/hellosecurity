@@ -1,9 +1,13 @@
 package com.github.kvcheban.hellosecurity;
 
+import java.security.Principal;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -29,16 +33,20 @@ public class MvcController {
 	}
 
 	@GetMapping("/")
-	public String home() {
+	public String home(Principal principal, Model model) {
+		if (principal instanceof OAuth2AuthenticationToken) { // if Oauth2 is enabled
+			model.addAttribute("userInfo", 
+					((OAuth2AuthenticationToken) principal).getPrincipal().getAttributes());
+		}
 		return "home";
 	}
 
-	@GetMapping("/userPage")
+	@GetMapping("/user-page")
 	public String userPage() {
 		return "userPage";
 	}
 
-	@GetMapping("/adminPage")
+	@GetMapping("/admin-page")
 	public String adminPage() {
 		return "adminPage";
 	}
@@ -80,5 +88,12 @@ public class MvcController {
 		cookie.setMaxAge(-1);
 		cookie.setPath("/");
 		return cookie;
+	}
+
+	@GetMapping("/userinfo")
+	public String getUserInfo(OAuth2AuthenticationToken token, Model model) {
+		OAuth2User oauthUser = token.getPrincipal();
+		model.addAttribute("userInfo", oauthUser.getAttributes());
+		return "userInfo";
 	}
 }

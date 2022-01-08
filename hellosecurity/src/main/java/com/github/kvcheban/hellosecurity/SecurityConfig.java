@@ -1,5 +1,6 @@
 package com.github.kvcheban.hellosecurity;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Value("${hellosecurity.useOauth:true}")
+	private boolean useOauth;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -27,12 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.disable()
 			.authorizeRequests()
 				.antMatchers("/login*").permitAll()
-				.antMatchers("/adminPage").hasRole("ADMIN")
-				.antMatchers("/userPage").hasRole("USER")
-				.anyRequest().authenticated()
-			.and()
-			.formLogin()
+				.antMatchers("/admin-page").hasRole("ADMIN")
+				.antMatchers("/user-page").hasRole("USER")
+				.anyRequest().authenticated();
+
+		configureLogin(http);
+	}
+
+	private void configureLogin(HttpSecurity http) throws Exception {
+		if (useOauth) {
+			http.oauth2Login();
+		} else {
+			http.formLogin()
 				.loginPage("/login")
 				.failureUrl("/login-error");
+		}
 	}
 }

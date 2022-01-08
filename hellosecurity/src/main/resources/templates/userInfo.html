@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Oauth2 User Info</title>
+	</head>
+	<body>
+		<h1>Oauth2 User Info</h1>
+		<div th:if="${userInfo != null}">
+			<img th:src="${userInfo.get('avatar_url')}" width="100" /> <br />
+			Login: <span th:text="${userInfo.get('login')}" /> <br />
+			Github URL: <a th:href="${userInfo.get('html_url')}" th:text="${userInfo.get('html_url')}" /> <br />
+			<br />
+			Raw user attributes: <br />
+			<table>
+				<tr>
+					<th>Attribute</th>
+					<th>Value</th>
+				</tr>
+				<tr th:each="entry : ${userInfo}">
+					<td th:text="${entry.key}"></td>
+					<td th:text="${entry.value}"></td>
+				</tr>
+			</table>
+		<a href="/">Home</a>
+	</body>
+</html>

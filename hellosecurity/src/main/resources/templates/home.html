@@ -6,15 +6,19 @@
 	<body>
 		<h1>Home page</h1>
 		<p>
-			Welcome, <b><span sec:authentication="name">User</span></b>!
+			Welcome,<b>
+			<span th:switch="${userInfo}">
+				<span th:case="null" sec:authentication="name" />
+				<span th:case="*" th:text="${userInfo.get('login')}" />
+			</span></b>! <br />
+			Your authorities: <span sec:authentication="principal.authorities" />. <br />
 			<br />
-			Your authorities: <span sec:authentication="principal.authorities">[ROLE_USER]</span>.
-			<br />
-			<br />
-			<a href="userPage" sec:authorize="hasRole('USER')">User-only page</a><br />
-			<a href="adminPage" sec:authorize="hasRole('ADMIN')">Admin-only page</a><br />
+			<a href="user-page" sec:authorize="hasRole('USER')">User-only page</a><br />
+			<a href="admin-page" sec:authorize="hasRole('ADMIN')">Admin-only page</a><br />
 			<a href="contacts">Contacts</a><br />
-			<a href="cookies">Cookies</a>
+			<a href="cookies">Cookies</a><br />
+			<a href="userinfo" th:if="${userInfo != null}">User info</a><br />
+			<a href="logout">Log out</a>
 		</p>
 	</body>
 </html>
